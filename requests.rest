@@ -1,4 +1,4 @@
 
-GET http://localhost:5000/api/user
+GET http://localhost:5000/api/users/1be2146d-b85f-43c0-ad5c-b154268d76fd
 Content-Type: application/json
 
