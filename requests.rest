@@ -1,4 +1,10 @@
 
-GET http://localhost:5000/api/users/1be2146d-b85f-43c0-ad5c-b154268d76fd
+POST http://localhost:5000/api/users
 Content-Type: application/json
 
+{
+
+  "username": "igofr",
+  "age": 239,
+  "hobbies": ["basketball"]
+}

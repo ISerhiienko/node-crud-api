@@ -2,6 +2,7 @@ import http, { IncomingMessage, ServerResponse } from "http";
 import dotenv from "dotenv";
 import { getUsers } from "./handlers/getUsersHandler";
 import { getUserById } from "./handlers/getUserByIdHandler";
+import { createUserHandler } from "./handlers/createUserHandler";
 
 dotenv.config();
 
@@ -13,6 +14,8 @@ const server: http.Server = http.createServer(
       getUsers(req, res, url);
     } else if (url && url.startsWith("/api/users/")) {
       getUserById(req, res, url);
+    } else if (req.method === "POST" && url === "/api/users") {
+      createUserHandler(req, res);
     } else {
       res.writeHead(405, { "Content-Type": "text/plain" });
       res.end("Method Not Allowed");
