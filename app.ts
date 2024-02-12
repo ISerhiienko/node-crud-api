@@ -13,7 +13,7 @@ import { CONTENT_TYPE, sendResponse } from "./helpers/helpers";
 
 dotenv.config();
 
-const server: http.Server = http.createServer(
+export const server: http.Server = http.createServer(
   (req: IncomingMessage, res: ServerResponse): void => {
     const url = req.url;
 
