@@ -5,21 +5,7 @@ import http, {
 } from "http";
 import { validate } from "uuid";
 import { users } from "../controllers/userController";
-
-const CONTENT_TYPE: OutgoingHttpHeaders = {
-  "Content-Type": "application/json",
-};
-
-const sendResponse = (
-  res: http.ServerResponse,
-  code: number,
-  contentType: OutgoingHttpHeaders,
-  data: object | undefined,
-): void => {
-  const jsonData = JSON.stringify(data);
-  res.writeHead(code, contentType);
-  res.end(jsonData);
-};
+import { CONTENT_TYPE, sendResponse } from "../helpers/helpers";
 
 export const getUserById = (
   req: IncomingMessage,

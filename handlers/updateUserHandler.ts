@@ -1,20 +1,7 @@
 import { IncomingMessage, OutgoingHttpHeaders, ServerResponse } from "http";
 import { validate, v4 as uuidv4 } from "uuid";
 import { User, users } from "../controllers/userController";
-
-const CONTENT_TYPE: OutgoingHttpHeaders = {
-  "Content-Type": "application/json",
-};
-export const sendResponse = (
-  res: ServerResponse,
-  code: number,
-  contentType: OutgoingHttpHeaders,
-  data: object | undefined,
-): void => {
-  const jsonData: string = JSON.stringify(data);
-  res.writeHead(code, contentType);
-  res.end(jsonData);
-};
+import { CONTENT_TYPE, sendResponse } from "../helpers/helpers";
 
 const validateUpdateBody = (user: object): boolean => {
   return "username" in user || "age" in user || "hobbies" in user;
@@ -32,7 +19,6 @@ export const updateUserHandler = (
 
   req.on("end", (): void => {
     const newUser: User = JSON.parse(data);
-    console.log(newUser);
 
     if (validateUpdateBody(newUser)) {
       const id: string = url?.split("/").slice(-1)[0];
@@ -42,10 +28,6 @@ export const updateUserHandler = (
 
         if (userIndex !== -1) {
           users[userIndex] = { ...users[userIndex], ...newUser };
-
-          // console.log("users", users);
-          // console.log("userIndex", userIndex);
-          // console.log("newUser", newUser);
 
           sendResponse(res, 200, CONTENT_TYPE, users[userIndex]);
         } else {

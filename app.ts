@@ -1,10 +1,15 @@
-import http, { IncomingMessage, ServerResponse } from "http";
+import http, {
+  IncomingMessage,
+  ServerResponse,
+  OutgoingHttpHeaders,
+} from "http";
 import dotenv from "dotenv";
 import { getUsers } from "./handlers/getUsersHandler";
 import { getUserById } from "./handlers/getUserByIdHandler";
 import { createUserHandler } from "./handlers/createUserHandler";
 import { updateUserHandler } from "./handlers/updateUserHandler";
 import { deleteUserHandler } from "./handlers/deleteUserHandler";
+import { CONTENT_TYPE, sendResponse } from "./helpers/helpers";
 
 dotenv.config();
 
@@ -13,18 +18,49 @@ const server: http.Server = http.createServer(
     const url = req.url;
 
     if (req.method === "GET") {
-      getUsers(req, res, url);
+      try {
+        getUsers(req, res, url);
+      } catch {
+        sendResponse(res, 500, CONTENT_TYPE, {
+          error: "Internal server error",
+        });
+      }
     } else if (url && url.startsWith("/api/users/")) {
-      getUserById(req, res, url);
+      try {
+        getUserById(req, res, url);
+      } catch {
+        sendResponse(res, 500, CONTENT_TYPE, {
+          error: "Internal server error",
+        });
+      }
     } else if (req.method === "POST" && url === "/api/users") {
-      createUserHandler(req, res);
+      try {
+        createUserHandler(req, res);
+      } catch {
+        sendResponse(res, 500, CONTENT_TYPE, {
+          error: "Internal server error",
+        });
+      }
     } else if (req.method === "PUT" && req.url?.startsWith("/api/users")) {
-      updateUserHandler(req, res, req.url);
+      try {
+        updateUserHandler(req, res, req.url);
+      } catch {
+        sendResponse(res, 500, CONTENT_TYPE, {
+          error: "Internal server error",
+        });
+      }
     } else if (req.method === "DELETE" && req.url?.startsWith("/api/users")) {
-      deleteUserHandler(res, req.url);
+      try {
+        deleteUserHandler(res, req.url);
+      } catch {
+        sendResponse(res, 500, CONTENT_TYPE, {
+          error: "Internal server error",
+        });
+      }
     } else {
-      res.writeHead(405, { "Content-Type": "text/plain" });
-      res.end("Method Not Allowed");
+      sendResponse(res, 404, CONTENT_TYPE, {
+        error: "Method is not allowed or URL is not found!",
+      });
     }
   },
 );
