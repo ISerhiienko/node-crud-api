@@ -4,6 +4,7 @@ import { getUsers } from "./handlers/getUsersHandler";
 import { getUserById } from "./handlers/getUserByIdHandler";
 import { createUserHandler } from "./handlers/createUserHandler";
 import { updateUserHandler } from "./handlers/updateUserHandler";
+import { deleteUserHandler } from "./handlers/deleteUserHandler";
 
 dotenv.config();
 
@@ -19,6 +20,8 @@ const server: http.Server = http.createServer(
       createUserHandler(req, res);
     } else if (req.method === "PUT" && req.url?.startsWith("/api/users")) {
       updateUserHandler(req, res, req.url);
+    } else if (req.method === "DELETE" && req.url?.startsWith("/api/users")) {
+      deleteUserHandler(res, req.url);
     } else {
       res.writeHead(405, { "Content-Type": "text/plain" });
       res.end("Method Not Allowed");
