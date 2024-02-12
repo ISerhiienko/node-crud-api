@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { getUsers } from "./handlers/getUsersHandler";
 import { getUserById } from "./handlers/getUserByIdHandler";
 import { createUserHandler } from "./handlers/createUserHandler";
+import { updateUserHandler } from "./handlers/updateUserHandler";
 
 dotenv.config();
 
@@ -16,6 +17,8 @@ const server: http.Server = http.createServer(
       getUserById(req, res, url);
     } else if (req.method === "POST" && url === "/api/users") {
       createUserHandler(req, res);
+    } else if (req.method === "PUT" && req.url?.startsWith("/api/users")) {
+      updateUserHandler(req, res, req.url);
     } else {
       res.writeHead(405, { "Content-Type": "text/plain" });
       res.end("Method Not Allowed");

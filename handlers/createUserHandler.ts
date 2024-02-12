@@ -16,14 +16,8 @@ export const sendResponse = (
   res.end(jsonData);
 };
 
-const validateBody = (user: object): boolean => {
-  return (
-    "username" in user &&
-    "age" in user &&
-    "hobbies" in user &&
-    user.username !== "" &&
-    user.age !== ""
-  );
+const validateBody = (user: Partial<User>): boolean => {
+  return "username" in user && "age" in user && "hobbies" in user;
 };
 
 export const createUserHandler = (
